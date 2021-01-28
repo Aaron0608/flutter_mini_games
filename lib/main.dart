@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'file:///D:/16_SOFTWARE_PROJECTS/FLUTTER_PROJECTS/tic_tac_toe/lib/tic_tac_toe/winning.dart';
-import 'file:///D:/16_SOFTWARE_PROJECTS/FLUTTER_PROJECTS/tic_tac_toe/lib/snake/snake.dart';
 import 'package:tic_tac_toe/tic_tac_toe/tic_tac_toe.dart';
+import 'snake/snake.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -54,8 +54,8 @@ class HomePage extends StatelessWidget {
                     padding: EdgeInsets.all(30.0),
                     color: Colors.white,
                     onPressed: () {
-                      //Navigator.of(context)
-                          //.push(MaterialPageRoute(builder: (context) => SnakePage()));
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) => SnakePage()));
                     },
                     child: Text(
                         "Snake",
