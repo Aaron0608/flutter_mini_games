@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                     color: Colors.white,
                     onPressed: () {
                       Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) => SnakePage()));
+                          .push(MaterialPageRoute(builder: (context) => SnakeGame()));
                     },
                     child: Text(
                         "Snake",
