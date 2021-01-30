@@ -7,14 +7,6 @@ import 'dart:async';
 
 //Create New Page for Snake Game
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SnakeGame(),
-    );
-  }
-}
 
 class SnakeGame extends StatefulWidget {
   @override
@@ -28,15 +20,15 @@ class _SnakeGameState extends State<SnakeGame> {
   final randomGen = Random();
 
   var snake = [
-    [0, 1],
-    [0, 0]
+    [0, 1], //head
+    [0, 0] //body - (first cell of body)
   ];
   var food = [0, 2];
   var direction = 'up';
   var isPlaying = false;
 
   void startGame() {
-    const duration = Duration(milliseconds: 300);
+    const duration = Duration(milliseconds: 200);
 
     snake = [ // Snake head
       [(squaresPerRow / 2).floor(), (squaresPerCol / 2).floor()]
@@ -60,18 +52,35 @@ class _SnakeGameState extends State<SnakeGame> {
     setState(() {
       switch(direction) {
         case 'up':
-          snake.insert(0, [snake.first[0], snake.first[1] - 1]);
+
+          if (snake.first[1] <= 0) {                                   //make the snake go from top of grid to bottom
+            snake.insert(0, [snake.first[0], squaresPerCol -1]);
+          } else {
+            snake.insert(0, [snake.first[0], snake.first[1] - 1]);   // keep the snake moving up
+          }
           break;
 
+
         case 'down':
-          snake.insert(0, [snake.first[0], snake.first[1] + 1]);
+
+          if (snake.first[1] >= squaresPerCol -1) {
+            snake.insert(0, [snake.first[0], 0]);
+          } else {
+            snake.insert(0, [snake.first[0], snake.first[1] + 1]);
+          }
           break;
 
         case 'left':
+          if (snake.first[0] <= 0) {
+            snake.insert(0, [squaresPerRow - 1, snake.first[1]]);
+          }
           snake.insert(0, [snake.first[0] - 1, snake.first[1]]);
           break;
 
         case 'right':
+          if (snake.first[0] >= squaresPerRow - 1) {
+            snake.insert(0, [0, snake.first[1]]);
+          }
           snake.insert(0, [snake.first[0] + 1, snake.first[1]]);
           break;
       }
@@ -92,15 +101,12 @@ class _SnakeGameState extends State<SnakeGame> {
   }
 
   bool checkGameOver() {
-    if (!isPlaying
-        || snake.first[1] < 0
-        || snake.first[1] >= squaresPerCol
-        || snake.first[0] < 0
-        || snake.first[0] > squaresPerRow
-    ) {
+    if (!isPlaying) {
       return true;
-    }
+     }
 
+
+    // Check if snake head has hit body
     for(var i=1; i < snake.length; ++i) {
       if (snake[i][0] == snake.first[0] && snake[i][1] == snake.first[1]) {
         return true;
@@ -137,6 +143,9 @@ class _SnakeGameState extends State<SnakeGame> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Snake Game"),
+      ),
       backgroundColor: Colors.black,
       body: Column(
         children: <Widget>[
