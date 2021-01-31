@@ -146,8 +146,20 @@ class _SnakeGameState extends State<SnakeGame> {
       appBar: AppBar(
         title: Text("Snake Game"),
       ),
-      backgroundColor: Colors.black,
-      body: Column(
+      //backgroundColor: Colors.black,
+      body:
+
+
+        Container(
+        decoration: BoxDecoration(
+        image: DecorationImage(
+        image: AssetImage("assets/images/home_page_background_7.jpg"),
+    fit: BoxFit.cover,
+    )
+    ),
+    child:
+
+      Column(
         children: <Widget>[
           Expanded(
             child: GestureDetector(
@@ -193,7 +205,7 @@ class _SnakeGameState extends State<SnakeGame> {
                       } else if (food[0] == x && food[1] == y) {
                         color = Colors.red;
                       } else {
-                        color = Colors.grey[800];
+                        color = Colors.grey[400];
                       }
 
                       return Container(
@@ -233,7 +245,7 @@ class _SnakeGameState extends State<SnakeGame> {
               )),
         ],
       ),
-    );
+    ));
   }
 }
 
