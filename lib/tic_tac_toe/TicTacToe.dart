@@ -17,6 +17,17 @@ class TicTacToeState extends State<TicTacToe> {
   bool gameOver = false;
   String winner;
 
+  int player1Score = 0;
+  int player2Score = 0;
+
+  String player_1 = "Player 1";
+  String player_2 = "Player 2";
+
+  var playerMapping = {
+    Player.PLAYER_1: "",
+    Player.PLAYER_2: "",
+  };
+
   int onUserPlayed(List<int> board) {
     var evaluation = Player.evaluateBoard(board);
 
@@ -24,11 +35,14 @@ class TicTacToeState extends State<TicTacToe> {
       setState(() {
         gameOver = true;
         winner = "Player 1";
+        player1Score = player1Score + 1;
+
       });
     } else if (evaluation == Player.PLAYER_2) {
       setState(() {
         gameOver = true;
         winner = "Player 2";
+        player2Score = player2Score + 1;
       });
     } else if (evaluation == Player.DRAW) {
       setState(() {
@@ -94,7 +108,12 @@ class TicTacToeState extends State<TicTacToe> {
       }
     });
 
+     playerMapping [Player.PLAYER_1] = player_1;
+     playerMapping [Player.PLAYER_2] = player_2;
+
+
     var text = "In Play";
+
 
     var state = onUserPlayed(board);
 
@@ -139,7 +158,7 @@ class TicTacToeState extends State<TicTacToe> {
                     Container(
                         decoration: showWidgetBorders ? widgetBorder() : null,
                         child: Center(
-                            child: Text("Current Player: $currentPlayer",
+                            child: Text("Current Player: ${playerMapping[currentPlayer]}",
                                 style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold)))),
@@ -147,7 +166,7 @@ class TicTacToeState extends State<TicTacToe> {
                       decoration: showWidgetBorders ? widgetBorder() : null,
                       child: Row(
                         children: [
-                          playerInfo(),
+                          playerInfo(player_1, player_2, player1Score, player2Score),
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: FlatButton(

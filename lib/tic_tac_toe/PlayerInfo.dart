@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:tic_tac_toe/globals.dart';
 
 
-Widget playerInfo() {
+Widget playerInfo(player1Name, player2Name, player1Score, player2Score) {
   return Container(
       decoration: showWidgetBorders ? widgetBorder() : null,
       margin: EdgeInsets.all(32.0),
@@ -32,7 +32,7 @@ Widget playerInfo() {
                   child: Column(
                     children: [
                       Text(
-                        "Player 1:",
+                        '$player1Name: ',
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
@@ -42,7 +42,7 @@ Widget playerInfo() {
                 padding: EdgeInsets.all(2.0),
                 child: Column(children: [
                   Text(
-                    "3",
+                    player1Score.toString(),
                     style:
                     TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
@@ -57,7 +57,7 @@ Widget playerInfo() {
                   child: Column(
                     children: [
                       Text(
-                        "Player 2:",
+                        '$player2Name: ',
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
@@ -67,7 +67,7 @@ Widget playerInfo() {
                 padding: EdgeInsets.all(2.0),
                 child: Column(children: [
                   Text(
-                    "0",
+                    player2Score.toString(),
                     style:
                     TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),

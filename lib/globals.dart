@@ -2,7 +2,7 @@ library gamehub.globals;
 
 import 'package:flutter/cupertino.dart';
 
-bool showWidgetBorders = true;
+bool showWidgetBorders = false;
 
 BoxDecoration widgetBorder() {
   return BoxDecoration(border: Border.all());
