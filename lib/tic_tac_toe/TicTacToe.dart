@@ -23,6 +23,9 @@ class TicTacToeState extends State<TicTacToe> {
   String player_1 = "Player 1";
   String player_2 = "Player 2";
 
+  bool editPlayer1Name = false;
+  bool editPlayer2Name = false;
+
   var playerMapping = {
     Player.PLAYER_1: "",
     Player.PLAYER_2: "",
@@ -36,7 +39,6 @@ class TicTacToeState extends State<TicTacToe> {
         gameOver = true;
         winner = "Player 1";
         player1Score = player1Score + 1;
-
       });
     } else if (evaluation == Player.PLAYER_2) {
       setState(() {
@@ -78,7 +80,19 @@ class TicTacToeState extends State<TicTacToe> {
     });
   }
 
-
+  void handleShowPlayerNameChange(player, [newPlayerName=false]) {
+    if (player == Player.PLAYER_1) {
+      setState(() {
+        editPlayer1Name = !editPlayer1Name;
+        player_1 = newPlayerName != false ? newPlayerName : player_1;
+      });
+    } else if (player == Player.PLAYER_2) {
+      setState(() {
+        editPlayer2Name = !editPlayer2Name;
+        player_2 = newPlayerName != false ? newPlayerName : player_2;
+      });
+    }
+  }
 
   void endGame() {
     showDialog(
@@ -110,12 +124,10 @@ class TicTacToeState extends State<TicTacToe> {
       }
     });
 
-     playerMapping [Player.PLAYER_1] = player_1;
-     playerMapping [Player.PLAYER_2] = player_2;
-
+    playerMapping[Player.PLAYER_1] = player_1;
+    playerMapping[Player.PLAYER_2] = player_2;
 
     var text = "In Play";
-
 
     var state = onUserPlayed(board);
 
@@ -160,7 +172,8 @@ class TicTacToeState extends State<TicTacToe> {
                     Container(
                         decoration: showWidgetBorders ? widgetBorder() : null,
                         child: Center(
-                            child: Text("Current Player: ${playerMapping[currentPlayer]}",
+                            child: Text(
+                                "Current Player: ${playerMapping[currentPlayer]}",
                                 style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold)))),
@@ -168,7 +181,14 @@ class TicTacToeState extends State<TicTacToe> {
                       decoration: showWidgetBorders ? widgetBorder() : null,
                       child: Row(
                         children: [
-                          playerInfo(player_1, player_2, player1Score, player2Score, true, false),
+                          playerInfo(
+                              player_1,
+                              player_2,
+                              player1Score,
+                              player2Score,
+                              editPlayer1Name,
+                              editPlayer2Name,
+                              handleShowPlayerNameChange),
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: FlatButton(

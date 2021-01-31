@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/globals.dart';
 import 'package:tic_tac_toe/tic_tac_toe/winning.dart';
 
-Widget playerInfo(player1Name, player2Name, player1Score, player2Score, editPlayer1Name, editPlayer2Name, handleShowPlayerName) {
+Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
+    editPlayer1Name, editPlayer2Name, handleShowPlayerNameChange) {
   return Container(
       decoration: showWidgetBorders ? widgetBorder() : null,
       margin: EdgeInsets.all(32.0),
@@ -29,26 +30,32 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score, editPlay
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(2.0),
-                child: Column(children: [
-                  IconButton(
-                    icon: Icon(Icons.create),
-                    onPressed:() {
-                      handleShowPlayerNameChange(Player.PLAYER_1);
-                    }
-
-                  )
-                ])
-              ),
+                  padding: EdgeInsets.all(2.0),
+                  child: Column(children: [
+                    IconButton(
+                        icon: Icon(Icons.create),
+                        onPressed: () {
+                          handleShowPlayerNameChange(Player.PLAYER_1);
+                        })
+                  ])),
               Container(
                   padding: EdgeInsets.all(2.0),
                   child: Column(
                     children: [
-                      Text(
-                        '$player1Name: ',
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
+                      editPlayer1Name
+                          ? Container(
+                              width: 100,
+                              child: TextField(
+                                onSubmitted: (newName) {
+                                  handleShowPlayerNameChange(
+                                      Player.PLAYER_1, newName);
+                                },
+                              ))
+                          : Text(
+                              '$player1Name: ',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
                     ],
                   )),
               Container(
@@ -56,8 +63,7 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score, editPlay
                 child: Column(children: [
                   Text(
                     player1Score.toString(),
-                    style:
-                    TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ]),
               )
@@ -69,19 +75,29 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score, editPlay
                   padding: EdgeInsets.all(2.0),
                   child: Column(children: [
                     IconButton(
-                      icon: Icon(Icons.create),
-                    )
-                  ])
-              ),
+                        icon: Icon(Icons.create),
+                        onPressed: () {
+                          handleShowPlayerNameChange(Player.PLAYER_2);
+                        })
+                  ])),
               Container(
                   padding: EdgeInsets.all(2.0),
                   child: Column(
                     children: [
-                      Text(
-                        '$player2Name: ',
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
+                      editPlayer2Name
+                          ? Container(
+                              width: 100,
+                              child: TextField(
+                                onSubmitted: (newName) {
+                                  handleShowPlayerNameChange(
+                                      Player.PLAYER_2, newName);
+                                },
+                              ))
+                          : Text(
+                              '$player2Name: ',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
                     ],
                   )),
               Container(
@@ -89,8 +105,7 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score, editPlay
                 child: Column(children: [
                   Text(
                     player2Score.toString(),
-                    style:
-                    TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ]),
               )
