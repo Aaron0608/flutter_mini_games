@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/tic_tac_toe/tic_tac_toe.dart';
 import 'snake/snake.dart';
@@ -33,7 +32,7 @@ class HomePage extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/home_page_background.jpg"),
+              image: AssetImage("assets/images/home_page_background_3.jpg"),
               fit: BoxFit.cover,
             )
           ),

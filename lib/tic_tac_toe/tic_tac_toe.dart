@@ -91,7 +91,18 @@ class GamePageState extends State<GamePage> {
         appBar: AppBar(
           title: Text("Tic Tac Toe"),
         ),
-        body: Column(
+
+        body:
+        Container(
+        decoration: BoxDecoration(
+        image: DecorationImage(
+        image: AssetImage("assets/images/home_page_background_5.jpg"),
+    fit: BoxFit.cover,
+    )
+    ),
+    child:
+
+        Column(
             children: [
               Expanded(
                   child: GridView.count(
@@ -129,7 +140,7 @@ class GamePageState extends State<GamePage> {
               )
 
             ]
-        ));
+        )));
 
   }
 }
@@ -146,7 +157,7 @@ class Cell extends StatelessWidget {
   }
 
   final BorderSide _borderSide =
-  BorderSide(color: Colors.black, width: 2.0, style: BorderStyle.solid);
+  BorderSide(color: Colors.grey[50], width: 2.0, style: BorderStyle.solid);
 
   Border _determineBorder() {
     Border determineBorder = Border.all();
@@ -196,7 +207,7 @@ class Cell extends StatelessWidget {
   Widget build(BuildContext context) {
     var color;
     if(playerSymbol == "X") color = Colors.blue;
-    else color = Colors.red;
+    else color = Colors.pink;
 
     return GestureDetector(
       onTap: _handleTap,
