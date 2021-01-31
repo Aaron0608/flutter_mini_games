@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/globals.dart';
+import 'package:tic_tac_toe/tic_tac_toe/winning.dart';
 
-
-Widget playerInfo(player1Name, player2Name, player1Score, player2Score) {
+Widget playerInfo(player1Name, player2Name, player1Score, player2Score, editPlayer1Name, editPlayer2Name, handleShowPlayerName) {
   return Container(
       decoration: showWidgetBorders ? widgetBorder() : null,
       margin: EdgeInsets.all(32.0),
@@ -28,6 +29,18 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score) {
           Row(
             children: [
               Container(
+                padding: EdgeInsets.all(2.0),
+                child: Column(children: [
+                  IconButton(
+                    icon: Icon(Icons.create),
+                    onPressed:() {
+                      handleShowPlayerNameChange(Player.PLAYER_1);
+                    }
+
+                  )
+                ])
+              ),
+              Container(
                   padding: EdgeInsets.all(2.0),
                   child: Column(
                     children: [
@@ -52,6 +65,14 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score) {
           ),
           Row(
             children: [
+              Container(
+                  padding: EdgeInsets.all(2.0),
+                  child: Column(children: [
+                    IconButton(
+                      icon: Icon(Icons.create),
+                    )
+                  ])
+              ),
               Container(
                   padding: EdgeInsets.all(2.0),
                   child: Column(

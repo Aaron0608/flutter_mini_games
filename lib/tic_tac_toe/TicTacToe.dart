@@ -78,6 +78,8 @@ class TicTacToeState extends State<TicTacToe> {
     });
   }
 
+
+
   void endGame() {
     showDialog(
         context: context,
@@ -166,7 +168,7 @@ class TicTacToeState extends State<TicTacToe> {
                       decoration: showWidgetBorders ? widgetBorder() : null,
                       child: Row(
                         children: [
-                          playerInfo(player_1, player_2, player1Score, player2Score),
+                          playerInfo(player_1, player_2, player1Score, player2Score, true, false),
                           Container(
                             margin: EdgeInsets.all(10.0),
                             child: FlatButton(
