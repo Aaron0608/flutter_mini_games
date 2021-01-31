@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tic_tac_toe/globals.dart';
 import 'package:tic_tac_toe/tic_tac_toe/Cell.dart';
+import 'package:tic_tac_toe/tic_tac_toe/PlayerInfo.dart';
 import 'package:tic_tac_toe/tic_tac_toe/winning.dart';
 
 class TicTacToe extends StatefulWidget {
@@ -64,51 +65,33 @@ class TicTacToeState extends State<TicTacToe> {
   }
 
   void endGame() {
-    if (gameOver) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Game Over'),
-              content: Text(
-                'Winner $winner',
-                style: TextStyle(fontSize: 20),
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Game Over'),
+            content: Text(
+              'Winner $winner',
+              style: TextStyle(fontSize: 20),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Close'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
-    }
-  }
-
-  Widget PlayerInfo() {
-    return Container(
-        decoration: showWidgetBorders ? widgetBorder() : null,
-        margin: EdgeInsets.all(32.0),
-        child: Column(
-          children: [
-            Text(
-              "Player 1: X",
-              style: TextStyle(fontSize: 20, backgroundColor: Colors.amber),
-            ),
-            Text(
-              "Player 2: O",
-              style: TextStyle(fontSize: 20, backgroundColor: Colors.amber),
-            ),
-          ],
-        ));
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      endGame();
+      if (gameOver) {
+        endGame();
+      }
     });
 
     var text = "In Play";
@@ -124,8 +107,6 @@ class TicTacToeState extends State<TicTacToe> {
     } else {
       // game is not over yet
     }
-
-    if (gameOver) {}
 
     return Scaffold(
         backgroundColor: Colors.grey[300],
@@ -143,33 +124,42 @@ class TicTacToeState extends State<TicTacToe> {
               child: Container(
                   decoration: showWidgetBorders ? widgetBorder() : null,
                   child: Column(children: [
-                    Container(
-                        child: Expanded(
-                            child: Container(
-                              decoration: showWidgetBorders ? widgetBorder() : null,
-                                child: GridView.count(
-                                    crossAxisCount: 3,
-                                    children: List.generate(9, (idx) {
-                                      return Cell(
-                                          idx: idx,
-                                          onTap: _movePlayed,
-                                          playerSymbol: getSymbolForIdx(idx));
-                                    }))))),
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        PlayerInfo(),
-                        Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: FlatButton(
-                            child: Icon(Icons.refresh, size: 70),
-                            onPressed: () {
-                              restartGame();
-                            },
-                          ),
-                        )
-                      ],
+                    Expanded(
+                      child: Container(
+                          decoration: showWidgetBorders ? widgetBorder() : null,
+                          child: GridView.count(
+                              crossAxisCount: 3,
+                              children: List.generate(9, (idx) {
+                                return Cell(
+                                    idx: idx,
+                                    onTap: _movePlayed,
+                                    playerSymbol: getSymbolForIdx(idx));
+                              }))),
                     ),
+                    Container(
+                        decoration: showWidgetBorders ? widgetBorder() : null,
+                        child: Center(
+                            child: Text("Current Player: $currentPlayer",
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold)))),
+                    Container(
+                      decoration: showWidgetBorders ? widgetBorder() : null,
+                      child: Row(
+                        children: [
+                          playerInfo(),
+                          Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: FlatButton(
+                              child: Icon(Icons.refresh, size: 70),
+                              onPressed: () {
+                                restartGame();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ])),
             )));
   }
