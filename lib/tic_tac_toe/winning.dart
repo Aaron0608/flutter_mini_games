@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class Player {
   static const int PLAYER_1 = 1;
   static const int PLAYER_2 = -1;
@@ -9,7 +7,7 @@ class Player {
   static const int EMPTY_SPACE = 0;
   static const SYMBOLS = {EMPTY_SPACE: "", PLAYER_1: "X", PLAYER_2: "O"};
 
-  static const WIN_CONDITIONAS_LIST = [
+  static const WIN_CONDITIONALS_LIST = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -38,7 +36,7 @@ class Player {
   }
 
   static int evaluateBoard(List<int> board) {
-    for (var list in WIN_CONDITIONAS_LIST) {
+    for (var list in WIN_CONDITIONALS_LIST) {
       if (board[list[0]] != EMPTY_SPACE &&
           board[list[0]] == board[list[1]] &&
           board[list[0]] == board[list[2]]) {

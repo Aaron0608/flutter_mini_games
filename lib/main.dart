@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:tic_tac_toe/tic_tac_toe/tic_tac_toe.dart';
+import 'package:tic_tac_toe/tic_tac_toe/TicTacToe.dart';
 import 'snake/snake.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -47,7 +46,7 @@ class HomePage extends StatelessWidget {
             color: Colors.white,
             onPressed: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => GamePage()));
+                  .push(MaterialPageRoute(builder: (context) => TicTacToe()));
             },
             child: Text(
               "Tic Tac Toe",
