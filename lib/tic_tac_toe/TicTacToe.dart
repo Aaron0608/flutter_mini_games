@@ -37,13 +37,13 @@ class TicTacToeState extends State<TicTacToe> {
     if (evaluation == Player.PLAYER_1) {
       setState(() {
         gameOver = true;
-        winner = "Player 1";
+        winner = player_1;
         player1Score = player1Score + 1;
       });
     } else if (evaluation == Player.PLAYER_2) {
       setState(() {
         gameOver = true;
-        winner = "Player 2";
+        winner = player_2;
         player2Score = player2Score + 1;
       });
     } else if (evaluation == Player.DRAW) {
@@ -165,7 +165,7 @@ class TicTacToeState extends State<TicTacToe> {
                               children: List.generate(9, (idx) {
                                 return Cell(
                                     idx: idx,
-                                    onTap: _movePlayed,
+                                    onTap: gameOver? null: _movePlayed,
                                     playerSymbol: getSymbolForIdx(idx));
                               }))),
                     ),
