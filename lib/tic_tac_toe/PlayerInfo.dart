@@ -20,7 +20,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                         child: Text(
                           "Score",
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(248, 211, 32, 1)),
                         ),
                       )
                     ],
@@ -33,6 +35,7 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                   padding: EdgeInsets.all(2.0),
                   child: Column(children: [
                     IconButton(
+                        color: Color.fromRGBO(248, 211, 32, 1),
                         icon: Icon(Icons.create),
                         onPressed: () {
                           handleShowPlayerNameChange(Player.PLAYER_1);
@@ -54,7 +57,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                           : Text(
                               '$player1Name: ',
                               style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                     ],
                   )),
@@ -63,7 +68,10 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                 child: Column(children: [
                   Text(
                     player1Score.toString(),
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(248, 211, 32, 1)),
                   ),
                 ]),
               )
@@ -75,6 +83,7 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                   padding: EdgeInsets.all(2.0),
                   child: Column(children: [
                     IconButton(
+                        color: Color.fromRGBO(248, 211, 32, 1),
                         icon: Icon(Icons.create),
                         onPressed: () {
                           handleShowPlayerNameChange(Player.PLAYER_2);
@@ -96,7 +105,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                           : Text(
                               '$player2Name: ',
                               style: TextStyle(
-                                  fontSize: 30, fontWeight: FontWeight.bold),
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                     ],
                   )),
@@ -105,7 +116,10 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                 child: Column(children: [
                   Text(
                     player2Score.toString(),
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(248, 211, 32, 1)),
                   ),
                 ]),
               )
