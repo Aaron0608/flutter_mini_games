@@ -1,9 +1,18 @@
 import 'package:tic_tac_toe/bloc_directory/database.dart';
 import 'package:tic_tac_toe/bloc_login/model/user_model.dart';
 
+
+/// UserDao provides the interface to the sqlite database stored on the phone
+/// locally. It calls the sqlite commands on the database.
+///
+/// dbProvider - actual sqlite database
+/// userTable - this variable holds the name of the the table in the database
 class UserDao {
   final dbProvider = DatabaseProvider.dbProvider;
 
+  /// add a new user to the database. Currently this is automatically
+  /// when we get the authentication token from the backend (which includes
+  /// username).
   Future<int> createUser(User user) async {
     final db = await dbProvider.database;
 

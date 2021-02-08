@@ -5,6 +5,11 @@
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
+
+    <!-- todo  reminder to remove/ look into "usesCleartextTraffic". This allows us to connect to
+            backend server over http, but android and i assume ios default to only allowing https.
+            I think we can get https (by adding ssl certificate) when we host server on heroku
+    -->
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="tic_tac_toe"

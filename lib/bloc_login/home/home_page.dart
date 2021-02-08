@@ -68,7 +68,7 @@ class thingGame extends StatefulWidget {
 }
 
 class _thingState extends State<thingGame> {
-  var userName = 'unknown';
+  String userName = null;
 
   void getName() async {
     var users = await getUser();
@@ -82,11 +82,10 @@ class _thingState extends State<thingGame> {
 
   @override
   Widget build(BuildContext context) {
-    if (userName == 'unknown') {
+    if (userName == null) {
       getName();
     }
 
-    debugPrint('helllo');
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
       height: MediaQuery.of(context).size.width * 0.16,
