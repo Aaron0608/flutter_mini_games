@@ -27,18 +27,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color.fromRGBO(33, 40, 69, 1),
         //backgroundColor: Colors.yellow,
         appBar: AppBar(title: Text('Game Hub'
             )),
         body:
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/home_page_background_3.jpg"),
-              fit: BoxFit.cover,
-            )
-          ),
-          child:
         ListView(children: [
           Center(                                                   // TIC TAC TOE GAME BUTTON
               child: Container(
@@ -88,7 +81,7 @@ class HomePage extends StatelessWidget {
                         style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   )))
-        ])));
+        ]));
   }
 }
 

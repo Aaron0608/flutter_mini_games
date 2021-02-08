@@ -15,7 +15,7 @@ class SnakeGame extends StatefulWidget {
 
 class _SnakeGameState extends State<SnakeGame> {
   final int squaresPerRow = 20;
-  final int squaresPerCol = 40;
+  final int squaresPerCol = 30;
   final fontStyle = TextStyle(color: Colors.white, fontSize: 20);
   final randomGen = Random();
 
@@ -143,21 +143,11 @@ class _SnakeGameState extends State<SnakeGame> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Snake Game"),
-      ),
+
+
+      backgroundColor: Color.fromRGBO(33, 40, 69, 1),
       //backgroundColor: Colors.black,
       body:
-
-
-        Container(
-        decoration: BoxDecoration(
-        image: DecorationImage(
-        image: AssetImage("assets/images/home_page_background_7.jpg"),
-    fit: BoxFit.cover,
-    )
-    ),
-    child:
 
       Column(
         children: <Widget>[
@@ -199,13 +189,13 @@ class _SnakeGameState extends State<SnakeGame> {
                       }
 
                       if (snake.first[0] == x && snake.first[1] == y) {
-                        color = Colors.green;
+                        color = Colors.green[700];
                       } else if (isSnakeBody) {
-                        color = Colors.green[200];
+                        color = Colors.green[400];
                       } else if (food[0] == x && food[1] == y) {
                         color = Colors.red;
                       } else {
-                        color = Colors.grey[400];
+                        color = Color.fromRGBO(33, 40, 69, 1);
                       }
 
                       return Container(
@@ -245,7 +235,7 @@ class _SnakeGameState extends State<SnakeGame> {
               )),
         ],
       ),
-    ));
+    );
   }
 }
 

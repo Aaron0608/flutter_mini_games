@@ -121,9 +121,12 @@ class TicTacToeState extends State<TicTacToe> {
                       ),
                     ),
                     Container(
-                        child: Text(
-                      "Winner",
-                    ))
+                      margin: EdgeInsets.only(top: 20),
+                        child: Center(
+                          child: Text(
+                      "Winner ${playerMapping[Player.flipPlayer(currentPlayer)]}",
+                            style: TextStyle(fontSize: 24),
+                    )))
                   ],
                 ),
               ),
@@ -175,6 +178,7 @@ class TicTacToeState extends State<TicTacToe> {
                       decoration: showWidgetBorders ? widgetBorder() : null,
                       margin: EdgeInsets.all(20),
                       child: GridView.count(
+                          physics: NeverScrollableScrollPhysics(),
                           crossAxisCount: 3,
                           children: List.generate(9, (idx) {
                             return Cell(
