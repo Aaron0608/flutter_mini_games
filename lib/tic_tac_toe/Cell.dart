@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 class Cell extends StatelessWidget {
   final int idx;
   final Function(int idx) onTap;
@@ -13,7 +15,7 @@ class Cell extends StatelessWidget {
   }
 
   final BorderSide _borderSide =
-      BorderSide(color: Color.fromRGBO(34, 110, 255, 1), width: 2.0, style: BorderStyle.solid);
+      BorderSide(color: gridColor, width: gridWidth, style: BorderStyle.solid);
 
   Border _determineBorder() {
     Border determineBorder = Border.all();
@@ -63,18 +65,22 @@ class Cell extends StatelessWidget {
   Widget build(BuildContext context) {
     var color;
     if (playerSymbol == "X")
-      color = Colors.greenAccent;
+      color = player1XColor;
     else
-      color = Colors.pink;
+      color = player2OColor;
 
     return GestureDetector(
-      onTap: _handleTap,
+      onTap: onTap != null ? _handleTap : null,
       child: Container(
-        margin: const EdgeInsets.all(0.0),
+        margin: blah,
         decoration: BoxDecoration(border: _determineBorder()),
         child: Center(
             child: Text(playerSymbol,
-                style: TextStyle(fontSize: 50, color: color, fontWeight: FontWeight.bold,))),
+                style: TextStyle(
+                  fontSize: playerSymbolSize,
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                ))),
       ),
     );
   }

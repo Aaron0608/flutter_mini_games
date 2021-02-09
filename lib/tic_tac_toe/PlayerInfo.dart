@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tic_tac_toe/globals.dart';
+import 'package:tic_tac_toe/tic_tac_toe/constants.dart';
 import 'package:tic_tac_toe/tic_tac_toe/winning.dart';
 
 Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
@@ -20,9 +21,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                         child: Text(
                           "Score",
                           style: TextStyle(
-                              fontSize: 15,
+                              fontSize: generalTextSize,
                               fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(248, 211, 32, 1)),
+                              color: generalTextColor),
                         ),
                       )
                     ],
@@ -35,7 +36,7 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                   padding: EdgeInsets.all(2.0),
                   child: Column(children: [
                     IconButton(
-                        color: Color.fromRGBO(248, 211, 32, 1),
+                        color: generalTextColor,
                         icon: Icon(Icons.create),
                         onPressed: () {
                           handleShowPlayerNameChange(Player.PLAYER_1);
@@ -57,9 +58,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                           : Text(
                               '$player1Name: ',
                               style: TextStyle(
-                                  fontSize: 30,
+                                  fontSize: generalTextSize,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                  color: playerNameTextColor),
                             ),
                     ],
                   )),
@@ -69,9 +70,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                   Text(
                     player1Score.toString(),
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: generalTextSize,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(248, 211, 32, 1)),
+                        color: generalTextColor),
                   ),
                 ]),
               )
@@ -83,7 +84,7 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                   padding: EdgeInsets.all(2.0),
                   child: Column(children: [
                     IconButton(
-                        color: Color.fromRGBO(248, 211, 32, 1),
+                        color: generalTextColor,
                         icon: Icon(Icons.create),
                         onPressed: () {
                           handleShowPlayerNameChange(Player.PLAYER_2);
@@ -105,9 +106,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                           : Text(
                               '$player2Name: ',
                               style: TextStyle(
-                                  fontSize: 30,
+                                  fontSize: generalTextSize,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                  color: playerNameTextColor),
                             ),
                     ],
                   )),
@@ -117,9 +118,9 @@ Widget playerInfo(player1Name, player2Name, player1Score, player2Score,
                   Text(
                     player2Score.toString(),
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: generalTextSize,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(248, 211, 32, 1)),
+                        color: generalTextColor),
                   ),
                 ]),
               )

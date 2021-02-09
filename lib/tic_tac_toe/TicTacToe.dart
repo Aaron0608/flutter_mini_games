@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:tic_tac_toe/globals.dart';
 import 'package:tic_tac_toe/tic_tac_toe/Cell.dart';
 import 'package:tic_tac_toe/tic_tac_toe/PlayerInfo.dart';
+import 'package:tic_tac_toe/tic_tac_toe/constants.dart';
 import 'package:tic_tac_toe/tic_tac_toe/winning.dart';
 
 class TicTacToe extends StatefulWidget {
@@ -121,12 +122,12 @@ class TicTacToeState extends State<TicTacToe> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
+                        margin: EdgeInsets.only(top: 20),
                         child: Center(
-                          child: Text(
-                      "Winner ${playerMapping[Player.flipPlayer(currentPlayer)]}",
-                            style: TextStyle(fontSize: 24),
-                    )))
+                            child: Text(
+                          "Winner ${playerMapping[Player.flipPlayer(currentPlayer)]}",
+                          style: TextStyle(fontSize: 24),
+                        )))
                   ],
                 ),
               ),
@@ -161,11 +162,11 @@ class TicTacToeState extends State<TicTacToe> {
     }
 
     return Scaffold(
-        backgroundColor: Color.fromRGBO(33, 40, 69, 1),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           title: Text("Tic Tac Toe"),
           centerTitle: true,
-          backgroundColor: Color.fromRGBO(33, 40, 69, 1),
+          backgroundColor: backgroundColor,
           elevation: 0,
         ),
         body: Container(
@@ -176,7 +177,10 @@ class TicTacToeState extends State<TicTacToe> {
                 Expanded(
                   child: Container(
                       decoration: showWidgetBorders ? widgetBorder() : null,
-                      margin: EdgeInsets.all(20),
+                      // margin: EdgeInsets.all(20),
+                      width: MediaQuery.of(context).size.width * 0.90,
+                      // height: MediaQuery.of(context).size.width * 0.1,
+                      // padding: EdgeInsets.all(20),
                       child: GridView.count(
                           physics: NeverScrollableScrollPhysics(),
                           crossAxisCount: 3,
@@ -193,9 +197,9 @@ class TicTacToeState extends State<TicTacToe> {
                         child: Text(
                             "Current Player: ${playerMapping[currentPlayer]}",
                             style: TextStyle(
-                                fontSize: 24,
+                                fontSize: generalTextSize,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(248, 211, 32, 1))))),
+                                color: generalTextColor)))),
                 Container(
                   decoration: showWidgetBorders ? widgetBorder() : null,
                   child: Row(
@@ -213,8 +217,8 @@ class TicTacToeState extends State<TicTacToe> {
                         child: FlatButton(
                           child: Icon(
                             Icons.refresh,
-                            size: 70,
-                            color: Color.fromRGBO(248, 211, 32, 1),
+                            size: refreshButtonSize,
+                            color: generalTextColor,
                           ),
                           onPressed: () {
                             restartGame();
