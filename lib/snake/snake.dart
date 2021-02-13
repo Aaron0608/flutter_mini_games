@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 // Here onwards is youtube tutorial
 
 //Create New Page for Snake Game
-
 
 class SnakeGame extends StatefulWidget {
   @override
@@ -19,6 +20,27 @@ class _SnakeGameState extends State<SnakeGame> {
   final fontStyle = TextStyle(color: Colors.white, fontSize: 20);
   final randomGen = Random();
 
+  int highScore = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHighScore();
+  }
+
+  _loadHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // when snake starts, try to read highscore from storage. if nothing stored set high-score to 0.
+      highScore = (prefs.getInt('highScore') ?? 0);
+    });
+  }
+
+  _updateHighScore(newHighScore) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('highScore', newHighScore);
+  }
+
   var snake = [
     [0, 1], //head
     [0, 0] //body - (first cell of body)
@@ -30,11 +52,12 @@ class _SnakeGameState extends State<SnakeGame> {
   void startGame() {
     const duration = Duration(milliseconds: 200);
 
-    snake = [ // Snake head
+    snake = [
+      // Snake head
       [(squaresPerRow / 2).floor(), (squaresPerCol / 2).floor()]
     ];
 
-    snake.add([snake.first[0], snake.first[1]+1]); // Snake body
+    snake.add([snake.first[0], snake.first[1] + 1]); // Snake body
 
     createFood();
 
@@ -50,20 +73,21 @@ class _SnakeGameState extends State<SnakeGame> {
 
   void moveSnake() {
     setState(() {
-      switch(direction) {
+      switch (direction) {
         case 'up':
-
-          if (snake.first[1] <= 0) {                                   //make the snake go from top of grid to bottom
-            snake.insert(0, [snake.first[0], squaresPerCol -1]);
+          if (snake.first[1] <= 0) {
+            //make the snake go from top of grid to bottom
+            snake.insert(0, [snake.first[0], squaresPerCol - 1]);
           } else {
-            snake.insert(0, [snake.first[0], snake.first[1] - 1]);   // keep the snake moving up
+            snake.insert(0, [
+              snake.first[0],
+              snake.first[1] - 1
+            ]); // keep the snake moving up
           }
           break;
 
-
         case 'down':
-
-          if (snake.first[1] >= squaresPerCol -1) {
+          if (snake.first[1] >= squaresPerCol - 1) {
             snake.insert(0, [snake.first[0], 0]);
           } else {
             snake.insert(0, [snake.first[0], snake.first[1] + 1]);
@@ -94,20 +118,16 @@ class _SnakeGameState extends State<SnakeGame> {
   }
 
   void createFood() {
-    food = [
-      randomGen.nextInt(squaresPerRow),
-      randomGen.nextInt(squaresPerCol)
-    ];
+    food = [randomGen.nextInt(squaresPerRow), randomGen.nextInt(squaresPerCol)];
   }
 
   bool checkGameOver() {
     if (!isPlaying) {
       return true;
-     }
-
+    }
 
     // Check if snake head has hit body
-    for(var i=1; i < snake.length; ++i) {
+    for (var i = 1; i < snake.length; ++i) {
       if (snake[i][0] == snake.first[0] && snake[i][1] == snake.first[1]) {
         return true;
       }
@@ -137,19 +157,18 @@ class _SnakeGameState extends State<SnakeGame> {
               ),
             ],
           );
-        }
-    );
+        });
   }
 
   Widget build(BuildContext context) {
+
+    if (snake.length - 2 > highScore) {
+      _updateHighScore(snake.length - 2);
+    }
     return Scaffold(
-
-
       backgroundColor: Color.fromRGBO(33, 40, 69, 1),
       //backgroundColor: Colors.black,
-      body:
-
-      Column(
+      body: Column(
         children: <Widget>[
           Expanded(
             child: GestureDetector(
@@ -231,6 +250,10 @@ class _SnakeGameState extends State<SnakeGame> {
                     'Score: ${snake.length - 2}',
                     style: fontStyle,
                   ),
+                  Text(
+                    'HS: $highScore',
+                    style: fontStyle,
+                  ),
                 ],
               )),
         ],
@@ -242,25 +265,25 @@ class _SnakeGameState extends State<SnakeGame> {
 //Here onwards is what alex and i had made
 
 //class SnakePage extends StatefulWidget {
-  // Create New Page for Snake Game
- // @override
+// Create New Page for Snake Game
+// @override
 //  SnakePageState createState() => SnakePageState();
 //}
 
 //class SnakePageState extends State<SnakePage> {
- // @override
-  //Widget build(BuildContext context) {
- //   // Create New Page for Snake Game
-  //  return Scaffold(
-  //      backgroundColor: Colors.black,
-  //      appBar: AppBar(
-  //          title: Text("Snake")
-  //      ),
-        //body: Center(
-        //child: FlatButton(
-        //child: Text("Hello World")
-        //  )
-        //   )
- //   );
- // }
+// @override
+//Widget build(BuildContext context) {
+//   // Create New Page for Snake Game
+//  return Scaffold(
+//      backgroundColor: Colors.black,
+//      appBar: AppBar(
+//          title: Text("Snake")
+//      ),
+//body: Center(
+//child: FlatButton(
+//child: Text("Hello World")
+//  )
+//   )
+//   );
+// }
 //}
