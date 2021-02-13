@@ -147,19 +147,7 @@ class TicTacToeState extends State<TicTacToe> {
     playerMapping[Player.PLAYER_1] = player_1;
     playerMapping[Player.PLAYER_2] = player_2;
 
-    var text = "In Play";
-
-    var state = onUserPlayed(board);
-
-    if (state == Player.PLAYER_1) {
-      text = "Player 1 won";
-    } else if (state == Player.PLAYER_2) {
-      text = "Player 2 won";
-    } else if (state == Player.DRAW) {
-      text = "Draw";
-    } else {
-      // game is not over yet
-    }
+    onUserPlayed(board);
 
     return Scaffold(
         backgroundColor: backgroundColor,
@@ -177,10 +165,7 @@ class TicTacToeState extends State<TicTacToe> {
                 Expanded(
                   child: Container(
                       decoration: showWidgetBorders ? widgetBorder() : null,
-                      // margin: EdgeInsets.all(20),
                       width: MediaQuery.of(context).size.width * 0.90,
-                      // height: MediaQuery.of(context).size.width * 0.1,
-                      // padding: EdgeInsets.all(20),
                       child: GridView.count(
                           physics: NeverScrollableScrollPhysics(),
                           crossAxisCount: 3,
