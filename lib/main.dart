@@ -11,9 +11,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    precacheImage(AssetImage("assets/images/home_page_background_3.jpg"), context);
-    precacheImage(AssetImage("assets/images/home_page_background_5.jpg"), context);
-    precacheImage(AssetImage("assets/images/home_page_background_7.jpg"), context);
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -24,64 +21,85 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  // Handle clicking the Tic Tac Toe button by navigating to the TicTacToe app
+  void handleOnClickTicTacToe(context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => TicTacToe()));
+  }
+
+  // Handle clicking the Snake button by navigating to the SnakeGame app
+  void handleOnClickSnakeGame(context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => SnakeGame()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromRGBO(33, 40, 69, 1),
-        //backgroundColor: Colors.yellow,
-        appBar: AppBar(title: Text('Game Hub'
-            )),
+        appBar: AppBar(
+          title: Text('Game Hub'),
+          actions: [
+            Container(
+                padding: EdgeInsets.all(10),
+                child: FlatButton(
+                  onPressed: null,
+                  child: Text(
+                    'About',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black,
+                    ),
+                  ),
+                ))
+          ],
+        ),
         body:
-        ListView(children: [
-          Center(                                                   // TIC TAC TOE GAME BUTTON
-              child: Container(
-                margin: EdgeInsets.all(20.0),
-
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(30.0),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => TicTacToe()));
-            },
-            child: Text(
-              "Tic Tac Toe",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)
-            ),
-          ))),
-          Center(                                                     // SNAKE GAME BUTTON
-              child: Container(
-                  margin: EdgeInsets.all(20.0),
-
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(30.0),
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) => SnakeGame()));
-                    },
-                    child: Text(
-                        "Snake",
-                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)
-                    ),
-                  ))),
-          Center(                                                     // ABOUT GAME BUTTON
-              child: Container(
-                  margin: EdgeInsets.only(bottom: 10.0),
-
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(10.0),
-                    color: Colors.grey,
-                    onPressed: () {
-                      //Navigator.of(context)
-                      //.push(MaterialPageRoute(builder: (context) => SnakePage()));
-                    },
-                    child: Text(
-                        "About",
-                        style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  )))
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Center(
+              // TIC TAC TOE GAME BUTTON
+              child: HomePageCard('Tic Tac Toe',
+                  handleOnButtonClick: handleOnClickTicTacToe)),
+          Center(
+              // SNAKE GAME BUTTON
+              child: HomePageCard(
+            'Snake',
+            handleOnButtonClick: handleOnClickSnakeGame,
+          )),
         ]));
   }
 }
 
+class HomePageCard extends StatelessWidget {
+  String name;
+  Function(BuildContext context) handleOnButtonClick;
+
+  HomePageCard(String name, {this.handleOnButtonClick}) {
+    this.name = name;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        margin: EdgeInsets.all(10),
+        // shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        child: Container(
+            width: 300,
+            height: 150,
+            child: FlatButton(
+              // padding: EdgeInsets.all(10.0),
+              onPressed: this.handleOnButtonClick == null
+                  ? null
+                  : () {
+                      this.handleOnButtonClick(context);
+                    },
+              child: Text(
+                name,
+                style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            )));
+  }
+}

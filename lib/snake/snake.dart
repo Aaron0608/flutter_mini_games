@@ -261,29 +261,3 @@ class _SnakeGameState extends State<SnakeGame> {
     );
   }
 }
-
-//Here onwards is what alex and i had made
-
-//class SnakePage extends StatefulWidget {
-// Create New Page for Snake Game
-// @override
-//  SnakePageState createState() => SnakePageState();
-//}
-
-//class SnakePageState extends State<SnakePage> {
-// @override
-//Widget build(BuildContext context) {
-//   // Create New Page for Snake Game
-//  return Scaffold(
-//      backgroundColor: Colors.black,
-//      appBar: AppBar(
-//          title: Text("Snake")
-//      ),
-//body: Center(
-//child: FlatButton(
-//child: Text("Hello World")
-//  )
-//   )
-//   );
-// }
-//}
