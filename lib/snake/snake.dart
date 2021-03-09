@@ -5,10 +5,6 @@ import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Here onwards is youtube tutorial
-
-//Create New Page for Snake Game
-
 class SnakeGame extends StatefulWidget {
   @override
   _SnakeGameState createState() => _SnakeGameState();
@@ -161,7 +157,6 @@ class _SnakeGameState extends State<SnakeGame> {
   }
 
   Widget build(BuildContext context) {
-
     if (snake.length - 2 > highScore) {
       _updateHighScore(snake.length - 2);
     }
@@ -172,61 +167,68 @@ class _SnakeGameState extends State<SnakeGame> {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
-              onVerticalDragUpdate: (details) {
-                if (direction != 'up' && details.delta.dy > 0) {
-                  direction = 'down';
-                } else if (direction != 'down' && details.delta.dy < 0) {
-                  direction = 'up';
-                }
-              },
-              onHorizontalDragUpdate: (details) {
-                if (direction != 'left' && details.delta.dx > 0) {
-                  direction = 'right';
-                } else if (direction != 'right' && details.delta.dx < 0) {
-                  direction = 'left';
-                }
-              },
-              child: AspectRatio(
-                aspectRatio: squaresPerRow / (squaresPerCol + 5),
-                child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: squaresPerRow,
-                    ),
-                    itemCount: squaresPerRow * squaresPerCol,
-                    itemBuilder: (BuildContext context, int index) {
-                      var color;
-                      var x = index % squaresPerRow;
-                      var y = (index / squaresPerRow).floor();
-
-                      bool isSnakeBody = false;
-                      for (var pos in snake) {
-                        if (pos[0] == x && pos[1] == y) {
-                          isSnakeBody = true;
-                          break;
-                        }
-                      }
-
-                      if (snake.first[0] == x && snake.first[1] == y) {
-                        color = Colors.green[700];
-                      } else if (isSnakeBody) {
-                        color = Colors.green[400];
-                      } else if (food[0] == x && food[1] == y) {
-                        color = Colors.red;
-                      } else {
-                        color = Color.fromRGBO(33, 40, 69, 1);
-                      }
-
-                      return Container(
-                        margin: EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          color: color,
-                          shape: BoxShape.circle,
+                onVerticalDragUpdate: (details) {
+                  if (direction != 'up' && details.delta.dy > 0) {
+                    direction = 'down';
+                  } else if (direction != 'down' && details.delta.dy < 0) {
+                    direction = 'up';
+                  }
+                },
+                onHorizontalDragUpdate: (details) {
+                  if (direction != 'left' && details.delta.dx > 0) {
+                    direction = 'right';
+                  } else if (direction != 'right' && details.delta.dx < 0) {
+                    direction = 'left';
+                  }
+                },
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(30, 60, 30, 70),
+                  child: SizedBox.expand(
+                      // aspectRatio: squaresPerRow / (squaresPerCol + 5),
+                      // aspectRatio:0.2,
+                      child: Container(
+                    decoration: BoxDecoration(border: Border.all()),
+                    child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 20,
                         ),
-                      );
-                    }),
-              ),
-            ),
+                        // itemCount: squaresPerRow * squaresPerCol,
+                        itemCount: 520,
+                        itemBuilder: (BuildContext context, int index) {
+                          var color;
+                          var x = index % squaresPerRow;
+                          var y = (index / squaresPerRow).floor();
+
+                          bool isSnakeBody = false;
+                          for (var pos in snake) {
+                            if (pos[0] == x && pos[1] == y) {
+                              isSnakeBody = true;
+                              break;
+                            }
+                          }
+
+                          if (snake.first[0] == x && snake.first[1] == y) {
+                            color = Colors.green[700];
+                          } else if (isSnakeBody) {
+                            color = Colors.green[400];
+                          } else if (food[0] == x && food[1] == y) {
+                            color = Colors.red;
+                          } else {
+                            color = Color.fromRGBO(33, 40, 69, 1);
+                          }
+
+                          return Container(
+                            margin: EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              color: color,
+                              shape: BoxShape.circle,
+                            ),
+                          );
+                        }),
+                  )),
+                )),
           ),
           Padding(
               padding: EdgeInsets.only(bottom: 20),

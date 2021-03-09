@@ -74,9 +74,12 @@ class HomePageCard extends StatelessWidget {
   String name;
   Function(BuildContext context) handleOnButtonClick;
 
-  HomePageCard(String name, {this.handleOnButtonClick}) {
-    this.name = name;
-  }
+  // Leaving this here as an example of class constructor
+  // HomePageCard(String name, {this.handleOnButtonClick}) {
+  //   this.name = name;
+  // }
+
+  HomePageCard(this.name, {this.handleOnButtonClick});
 
   @override
   Widget build(BuildContext context) {
