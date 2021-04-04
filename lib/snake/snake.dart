@@ -3,57 +3,70 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tic_tac_toe/snake/highScore.dart';
 
 class SnakeGame extends StatefulWidget {
   @override
   _SnakeGameState createState() => _SnakeGameState();
 }
 
+/// WARNING: The grid does not size to the squaresPerRow and squaresPerCol
+/// values specified at the beginning of this class. Instead the grid is hardcoded
+/// to look somewhat alright and then the number of columns was adjusted to match.
+///  So don't go messing with these values until the grid issue is fixed.
 class _SnakeGameState extends State<SnakeGame> {
-  final int squaresPerRow = 20;
-  final int squaresPerCol = 30;
-  final fontStyle = TextStyle(color: Colors.white, fontSize: 20);
-  final randomGen = Random();
+  static final int squaresPerRow = 20;
+  static final int squaresPerCol = 26;
+  static final fontStyle = TextStyle(color: Colors.white, fontSize: 20);
 
+  static final initialDirection = 'up';
+  static final List initialSnakePosition = [
+    [(squaresPerRow / 2).floor(), (squaresPerCol / 2).floor()],
+    //head
+    [(squaresPerRow / 2).floor(), (squaresPerCol / 2).floor() + 1],
+    //body - (first cell of body)
+  ];
+
+  int currentScore = 0;
   int highScore = 0;
+  String direction = initialDirection;
+  bool isPlaying = false;
+
+  var snake = initialSnakePosition;
+  var food = [0, 2];
 
   @override
   void initState() {
     super.initState();
-    _loadHighScore();
+    // When we first open Snake, we should load the high score.
+    _getHighScore();
   }
 
-  _loadHighScore() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  /// Retrieves the high score saved locally, and updates the 'highScore'
+  /// state variable.
+  _getHighScore() async {
+    int newHighScore = await getHighScore();
     setState(() {
-      // when snake starts, try to read highscore from storage. if nothing stored set high-score to 0.
-      highScore = (prefs.getInt('highScore') ?? 0);
+      highScore = newHighScore;
     });
   }
 
-  _updateHighScore(newHighScore) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('highScore', newHighScore);
+  _updateHighScore(int newHighScore) async {
+    await updateHighScore(newHighScore);
+    _getHighScore();
   }
 
-  var snake = [
-    [0, 1], //head
-    [0, 0] //body - (first cell of body)
-  ];
-  var food = [0, 2];
-  var direction = 'up';
-  var isPlaying = false;
+  _resetHighScore() async {
+    await resetHighScore();
+    _getHighScore();
+  }
 
   void startGame() {
     const duration = Duration(milliseconds: 200);
 
-    snake = [
-      // Snake head
-      [(squaresPerRow / 2).floor(), (squaresPerCol / 2).floor()]
-    ];
-
-    snake.add([snake.first[0], snake.first[1] + 1]); // Snake body
+    currentScore = 0;
+    direction = initialDirection;
+    snake = new List.from(initialSnakePosition);
 
     createFood();
 
@@ -93,15 +106,17 @@ class _SnakeGameState extends State<SnakeGame> {
         case 'left':
           if (snake.first[0] <= 0) {
             snake.insert(0, [squaresPerRow - 1, snake.first[1]]);
+          } else {
+            snake.insert(0, [snake.first[0] - 1, snake.first[1]]);
           }
-          snake.insert(0, [snake.first[0] - 1, snake.first[1]]);
           break;
 
         case 'right':
           if (snake.first[0] >= squaresPerRow - 1) {
             snake.insert(0, [0, snake.first[1]]);
+          } else {
+            snake.insert(0, [snake.first[0] + 1, snake.first[1]]);
           }
-          snake.insert(0, [snake.first[0] + 1, snake.first[1]]);
           break;
       }
 
@@ -109,12 +124,13 @@ class _SnakeGameState extends State<SnakeGame> {
         snake.removeLast();
       } else {
         createFood();
+        currentScore = snake.length - 2;
       }
     });
   }
 
   void createFood() {
-    food = [randomGen.nextInt(squaresPerRow), randomGen.nextInt(squaresPerCol)];
+    food = [Random().nextInt(squaresPerRow), Random().nextInt(squaresPerCol)];
   }
 
   bool checkGameOver() {
@@ -141,7 +157,7 @@ class _SnakeGameState extends State<SnakeGame> {
           return AlertDialog(
             title: Text('Game Over'),
             content: Text(
-              'Score: ${snake.length - 2}',
+              'Score: $currentScore',
               style: TextStyle(fontSize: 20),
             ),
             actions: <Widget>[
@@ -154,12 +170,14 @@ class _SnakeGameState extends State<SnakeGame> {
             ],
           );
         });
+    if (currentScore > highScore) {
+      _updateHighScore(currentScore);
+    }
   }
 
   Widget build(BuildContext context) {
-    if (snake.length - 2 > highScore) {
-      _updateHighScore(snake.length - 2);
-    }
+    // _getHighScore();
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(33, 40, 69, 1),
       //backgroundColor: Colors.black,
@@ -182,12 +200,9 @@ class _SnakeGameState extends State<SnakeGame> {
                   }
                 },
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(30, 60, 30, 70),
+                  padding: EdgeInsets.fromLTRB(30, 60, 30, 0),
                   child: SizedBox.expand(
-                      // aspectRatio: squaresPerRow / (squaresPerCol + 5),
-                      // aspectRatio:0.2,
                       child: Container(
-                    decoration: BoxDecoration(border: Border.all()),
                     child: GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -231,7 +246,22 @@ class _SnakeGameState extends State<SnakeGame> {
                 )),
           ),
           Padding(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    'Score: $currentScore',
+                    style: fontStyle,
+                  ),
+                  Text(
+                    'HS: $highScore',
+                    style: fontStyle,
+                  ),
+                ],
+              )),
+          Padding(
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -248,14 +278,15 @@ class _SnakeGameState extends State<SnakeGame> {
                           startGame();
                         }
                       }),
-                  Text(
-                    'Score: ${snake.length - 2}',
-                    style: fontStyle,
-                  ),
-                  Text(
-                    'HS: $highScore',
-                    style: fontStyle,
-                  ),
+                  FlatButton(
+                      color: Colors.orange,
+                      child: Text(
+                        "Reset High Score",
+                        style: fontStyle,
+                      ),
+                      onPressed: () {
+                        _resetHighScore();
+                      }),
                 ],
               )),
         ],
