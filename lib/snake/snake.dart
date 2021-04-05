@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tic_tac_toe/snake/endGameDialog.dart';
 import 'dart:math';
 import 'dart:async';
 
@@ -78,6 +79,11 @@ class _SnakeGameState extends State<SnakeGame> {
     });
   }
 
+  // Starts with an underscore to signal this function is private to this class.
+  // Meaning it should not be called from any other class. Most of the functions
+  // in this class should probably be private, im just lazy. However, something
+  // like 'startGame()' would not be private because we may want to trigger the
+  // start of the game from an external class, not this class.
   _updateHighScore(int newHighScore) async {
     await updateHighScore(newHighScore);
     _getHighScore();
@@ -114,7 +120,6 @@ class _SnakeGameState extends State<SnakeGame> {
   /// Remember position (0, 0) is the top left. So moving upwards is reducing
   /// the y value, moving left is reducing the x value.
   void moveSnake() {
-
     // Create a copy of the snake list so we don't mutate is below.
     // 'snake' is a state variable so we should only update it using setState().
     var newSnake = new List.from(snake);
@@ -125,8 +130,10 @@ class _SnakeGameState extends State<SnakeGame> {
           //make the snake go from top of grid to bottom
           newSnake.insert(0, [newSnake.first[0], squaresPerCol - 1]);
         } else {
-          newSnake.insert(0,
-              [newSnake.first[0], newSnake.first[1] - 1]); // keep the snake moving up
+          newSnake.insert(0, [
+            newSnake.first[0],
+            newSnake.first[1] - 1
+          ]); // keep the snake moving up
         }
         break;
 
@@ -189,24 +196,22 @@ class _SnakeGameState extends State<SnakeGame> {
     return false;
   }
 
+  /// Game has ended. Show dialog and update high score if needed.
   void endGame() {
+    // We need to pass these values to the dialog. We can't use the actual
+    // score and highScore variables because the highScore gets updated before the
+    // EndGameDialog is called. Meaning the highScore at the point always equals
+    // the currentScore.
+    int localScore = currentScore;
+    int localHighScore = highScore;
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Game Over'),
-            content: Text(
-              'Score: $currentScore',
-              style: TextStyle(fontSize: 20),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Close'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+          return EndGameDialog(
+            title: "Game Over",
+            score: localScore,
+            highScore: localHighScore,
           );
         });
     if (currentScore > highScore) {
