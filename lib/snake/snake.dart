@@ -5,6 +5,25 @@ import 'dart:async';
 
 import 'package:tic_tac_toe/snake/highScore.dart';
 
+/// Using an enum so we can reference the Direction for Snake as
+/// Direction.up instead of the string 'up'.
+///
+/// We do this because 'up' is just a string and does not mean anything without
+/// reading the code it is used with, which is not good practice. Instead,
+/// calling Direction.up tells us it relates to a direction, and someone could
+/// look at this doc string here to understand direction relates to direction
+/// of the snake.
+///
+/// It also helps prevent typos. You may misspell a direction when using a string.
+/// Unlikely in this case, but Direction.hello does not exist, compared to 'hello'
+/// as a string is acceptable and you may not know its wrong until the app breaks.
+enum Direction {
+  left,
+  up,
+  right,
+  down,
+}
+
 class SnakeGame extends StatefulWidget {
   @override
   _SnakeGameState createState() => _SnakeGameState();
@@ -19,7 +38,7 @@ class _SnakeGameState extends State<SnakeGame> {
   static final int squaresPerCol = 26;
   static final fontStyle = TextStyle(color: Colors.white, fontSize: 20);
 
-  static final initialDirection = 'up';
+  static final Direction initialDirection = Direction.up;
   static final List initialSnakePosition = [
     [(squaresPerRow / 2).floor(), (squaresPerCol / 2).floor()],
     //head
@@ -27,17 +46,25 @@ class _SnakeGameState extends State<SnakeGame> {
     //body - (first cell of body)
   ];
 
-  int currentScore = 0;
-  int highScore = 0;
-  String direction = initialDirection;
-  bool isPlaying = false;
+  int currentScore;
+  int highScore;
+  Direction direction;
+  bool isPlaying;
 
-  var snake = initialSnakePosition;
-  var food = [0, 2];
+  var snake;
+  var food;
 
   @override
   void initState() {
     super.initState();
+
+    currentScore = 0;
+    highScore = 0;
+    direction = initialDirection;
+    isPlaying = false;
+    snake = initialSnakePosition;
+    food = [0, 2];
+
     // When we first open Snake, we should load the high score.
     _getHighScore();
   }
@@ -64,13 +91,15 @@ class _SnakeGameState extends State<SnakeGame> {
   void startGame() {
     const duration = Duration(milliseconds: 200);
 
-    currentScore = 0;
-    direction = initialDirection;
-    snake = new List.from(initialSnakePosition);
+    setState(() {
+      currentScore = 0;
+      direction = initialDirection;
+      snake = new List.from(initialSnakePosition);
+      isPlaying = true;
+    });
 
     createFood();
 
-    isPlaying = true;
     Timer.periodic(duration, (Timer timer) {
       moveSnake();
       if (checkGameOver()) {
@@ -80,57 +109,69 @@ class _SnakeGameState extends State<SnakeGame> {
     });
   }
 
+  /// Move the snake on the screen.
+  ///
+  /// Remember position (0, 0) is the top left. So moving upwards is reducing
+  /// the y value, moving left is reducing the x value.
   void moveSnake() {
+
+    // Create a copy of the snake list so we don't mutate is below.
+    // 'snake' is a state variable so we should only update it using setState().
+    var newSnake = new List.from(snake);
+
+    switch (direction) {
+      case Direction.up:
+        if (newSnake.first[1] <= 0) {
+          //make the snake go from top of grid to bottom
+          newSnake.insert(0, [newSnake.first[0], squaresPerCol - 1]);
+        } else {
+          newSnake.insert(0,
+              [newSnake.first[0], newSnake.first[1] - 1]); // keep the snake moving up
+        }
+        break;
+
+      case Direction.down:
+        if (newSnake.first[1] >= squaresPerCol - 1) {
+          newSnake.insert(0, [newSnake.first[0], 0]);
+        } else {
+          newSnake.insert(0, [newSnake.first[0], newSnake.first[1] + 1]);
+        }
+        break;
+
+      case Direction.left:
+        if (newSnake.first[0] <= 0) {
+          newSnake.insert(0, [squaresPerRow - 1, newSnake.first[1]]);
+        } else {
+          newSnake.insert(0, [newSnake.first[0] - 1, newSnake.first[1]]);
+        }
+        break;
+
+      case Direction.right:
+        if (newSnake.first[0] >= squaresPerRow - 1) {
+          newSnake.insert(0, [0, newSnake.first[1]]);
+        } else {
+          newSnake.insert(0, [newSnake.first[0] + 1, newSnake.first[1]]);
+        }
+        break;
+    }
+
+    var score = currentScore;
+    if (newSnake.first[0] != food[0] || newSnake.first[1] != food[1]) {
+      newSnake.removeLast();
+    } else {
+      createFood();
+      score = newSnake.length - 2;
+    }
     setState(() {
-      switch (direction) {
-        case 'up':
-          if (snake.first[1] <= 0) {
-            //make the snake go from top of grid to bottom
-            snake.insert(0, [snake.first[0], squaresPerCol - 1]);
-          } else {
-            snake.insert(0, [
-              snake.first[0],
-              snake.first[1] - 1
-            ]); // keep the snake moving up
-          }
-          break;
-
-        case 'down':
-          if (snake.first[1] >= squaresPerCol - 1) {
-            snake.insert(0, [snake.first[0], 0]);
-          } else {
-            snake.insert(0, [snake.first[0], snake.first[1] + 1]);
-          }
-          break;
-
-        case 'left':
-          if (snake.first[0] <= 0) {
-            snake.insert(0, [squaresPerRow - 1, snake.first[1]]);
-          } else {
-            snake.insert(0, [snake.first[0] - 1, snake.first[1]]);
-          }
-          break;
-
-        case 'right':
-          if (snake.first[0] >= squaresPerRow - 1) {
-            snake.insert(0, [0, snake.first[1]]);
-          } else {
-            snake.insert(0, [snake.first[0] + 1, snake.first[1]]);
-          }
-          break;
-      }
-
-      if (snake.first[0] != food[0] || snake.first[1] != food[1]) {
-        snake.removeLast();
-      } else {
-        createFood();
-        currentScore = snake.length - 2;
-      }
+      currentScore = score;
+      snake = newSnake;
     });
   }
 
   void createFood() {
-    food = [Random().nextInt(squaresPerRow), Random().nextInt(squaresPerCol)];
+    setState(() {
+      food = [Random().nextInt(squaresPerRow), Random().nextInt(squaresPerCol)];
+    });
   }
 
   bool checkGameOver() {
@@ -149,8 +190,6 @@ class _SnakeGameState extends State<SnakeGame> {
   }
 
   void endGame() {
-    isPlaying = false;
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -173,11 +212,13 @@ class _SnakeGameState extends State<SnakeGame> {
     if (currentScore > highScore) {
       _updateHighScore(currentScore);
     }
+
+    setState(() {
+      isPlaying = false;
+    });
   }
 
   Widget build(BuildContext context) {
-    // _getHighScore();
-
     return Scaffold(
       backgroundColor: Color.fromRGBO(33, 40, 69, 1),
       //backgroundColor: Colors.black,
@@ -186,18 +227,28 @@ class _SnakeGameState extends State<SnakeGame> {
           Expanded(
             child: GestureDetector(
                 onVerticalDragUpdate: (details) {
-                  if (direction != 'up' && details.delta.dy > 0) {
-                    direction = 'down';
-                  } else if (direction != 'down' && details.delta.dy < 0) {
-                    direction = 'up';
+                  var newDirection = direction;
+                  if (direction != Direction.up && details.delta.dy > 0) {
+                    newDirection = Direction.down;
+                  } else if (direction != Direction.down &&
+                      details.delta.dy < 0) {
+                    newDirection = Direction.up;
                   }
+                  setState(() {
+                    direction = newDirection;
+                  });
                 },
                 onHorizontalDragUpdate: (details) {
-                  if (direction != 'left' && details.delta.dx > 0) {
-                    direction = 'right';
-                  } else if (direction != 'right' && details.delta.dx < 0) {
-                    direction = 'left';
+                  var newDirection = direction;
+                  if (direction != Direction.left && details.delta.dx > 0) {
+                    newDirection = Direction.right;
+                  } else if (direction != Direction.right &&
+                      details.delta.dx < 0) {
+                    newDirection = Direction.left;
                   }
+                  setState(() {
+                    direction = newDirection;
+                  });
                 },
                 child: Container(
                   padding: EdgeInsets.fromLTRB(30, 60, 30, 0),
